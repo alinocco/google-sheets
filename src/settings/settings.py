@@ -1,4 +1,5 @@
 import environ
+from datetime import timedelta
 
 from pathlib import Path
 
@@ -121,3 +122,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery Settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULE = {
+    'task-first': {
+        'task': 'modules.orders.tasks.add',
+        'schedule': timedelta(seconds=1)
+    },
+}
