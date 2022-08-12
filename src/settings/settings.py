@@ -153,7 +153,7 @@ CELERY_BEAT_SCHEDULE = {
 
 # Credentials for Google Drive API 
 # (get via https://console.cloud.google.com)
-CREDENTIALS_FILE = '/home/lina/Documents/SFW/Portfolio/Test/2022.08.11 Test - Canalservice/credentials.json'
+CREDENTIALS_FILE = 'credentials.json'
 
 # Google Sheets Document ID
 # https://docs.google.com/spreadsheets/d/1A80yThLhpntkx7KXi1J7TROb4xlv8mmjH0puejWcIDk/edit

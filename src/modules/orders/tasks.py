@@ -84,7 +84,7 @@ def synchronize_file_with_database():
 @shared_task
 def send_notification_with_expired_orders():
     """
-    Send notification via telegram with list of expired orders.
+    Send notification via Telegram with list of expired orders.
     """
     expired_orders = Order.objects.filter(delivery_date__lte=date.today()).order_by('number') 
     message = f'Просроченные заказы:\n\n{"№": <3} {"№ заказа":9} {"стоимость,$": <12} {"стоимость,Р": <12} {"дата доставки": >15}\n'
