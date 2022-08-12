@@ -136,7 +136,12 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'synchronize-file-with-database': {
         'task': 'modules.orders.tasks.synchronize_file_with_database',
-        'schedule': timedelta(minutes=1)
+        'schedule': timedelta(minutes=1),
+    },
+
+    'send-notification-with-expired-orders': {
+        'task': 'modules.orders.tasks.send_notification_with_expired_orders',
+        'schedule': crontab(hour=0, minute=0),
     },
 
     'update-dollar-course': {

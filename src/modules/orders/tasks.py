@@ -4,8 +4,10 @@ from datetime import date
 from settings.settings import CREDENTIALS_FILE, SPREADSHEET_ID, SPREADSHEET_RANGE, DOLLAR_COURSE
 from .services.google import authorize, read_spreadsheet
 from .services.bank import get_dollar_course
-
 from .models import Order
+
+from telegram.bot import notify
+
 
 class OrderData():
     """ 
@@ -77,13 +79,27 @@ def synchronize_file_with_database():
         for order in orders_in_db:
             order.deleted_from_file = True
             order.save()
-    
-
-    print(Order.objects.all().count())
-
-        
 
 
+@shared_task
+def send_notification_with_expired_orders():
+    """
+    Send notification via telegram with list of expired orders.
+    """
+    expired_orders = Order.objects.filter(delivery_date__lte=date.today()).order_by('delivery_date') 
+    message = 'Просроченные заказы:\n\n№     | № заказа | стоимость, $ | стоимость, Р | дата доставки\n'
+
+    for order in expired_orders:
+        message += '\n{number:7d} {order:10d} {price_in_dollars:12d} {price_in_rubles:12d} {delivery_date:15}\n'.format(
+            number=order.number,
+            order=int(order.order),
+            price_in_dollars=order.price_in_dollars,
+            price_in_rubles=order.price_in_rubles,
+            delivery_date=order.delivery_date.strftime("%d.%m.%Y"),
+        )
+
+    notify(message)
+                 
 
 @shared_task
 def update_dollar_course():
