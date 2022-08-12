@@ -86,13 +86,13 @@ def send_notification_with_expired_orders():
     """
     Send notification via telegram with list of expired orders.
     """
-    expired_orders = Order.objects.filter(delivery_date__lte=date.today()).order_by('delivery_date') 
-    message = 'Просроченные заказы:\n\n№     | № заказа | стоимость, $ | стоимость, Р | дата доставки\n'
+    expired_orders = Order.objects.filter(delivery_date__lte=date.today()).order_by('number') 
+    message = f'Просроченные заказы:\n\n{"№": <3} {"№ заказа":9} {"стоимость,$": <12} {"стоимость,Р": <12} {"дата доставки": >15}\n'
 
     for order in expired_orders:
-        message += '\n{number:7d} {order:10d} {price_in_dollars:12d} {price_in_rubles:12d} {delivery_date:15}\n'.format(
+        message += '\n{number: <3} {order:9} {price_in_dollars: <12} {price_in_rubles: <12} {delivery_date: >15}\n'.format(
             number=order.number,
-            order=int(order.order),
+            order=order.order,
             price_in_dollars=order.price_in_dollars,
             price_in_rubles=order.price_in_rubles,
             delivery_date=order.delivery_date.strftime("%d.%m.%Y"),

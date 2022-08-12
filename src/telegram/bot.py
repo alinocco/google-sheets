@@ -19,5 +19,6 @@ def notify(message):
     environ.Env.read_env()
 
     # Notification
+    message = '<pre>' + message + '</pre>'
     telegram = get_notifier('telegram')
-    telegram.notify(token=env('TOKEN'), chat_id=env('CHAT_ID'), message=message)
+    telegram.notify(token=env('TOKEN'), chat_id=env('CHAT_ID'), message=message, parse_mode='html')

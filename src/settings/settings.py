@@ -141,7 +141,7 @@ CELERY_BEAT_SCHEDULE = {
 
     'send-notification-with-expired-orders': {
         'task': 'modules.orders.tasks.send_notification_with_expired_orders',
-        'schedule': crontab(hour=0, minute=0),
+        'schedule': timedelta(minutes=1),
     },
 
     'update-dollar-course': {
