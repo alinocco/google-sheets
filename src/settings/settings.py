@@ -123,14 +123,27 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 # Celery Settings
+# https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html
+
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
     'task-first': {
-        'task': 'modules.orders.tasks.add',
-        'schedule': timedelta(seconds=1)
+        'task': 'modules.orders.tasks.synchronize_file_with_database',
+        'schedule': timedelta(minutes=1)
     },
 }
+
+
+# Credentials for Google Drive API 
+# (get via https://console.cloud.google.com)
+CREDENTIALS_FILE = '/home/lina/Documents/SFW/Portfolio/Test/2022.08.11 Test - Canalservice/credentials.json'
+
+# Google Sheets Document ID
+# https://docs.google.com/spreadsheets/d/1A80yThLhpntkx7KXi1J7TROb4xlv8mmjH0puejWcIDk/edit
+SPREADSHEET_ID = '1A80yThLhpntkx7KXi1J7TROb4xlv8mmjH0puejWcIDk'
+SPREADSHEET_RANGE = 'A1:D51'
