@@ -1,5 +1,7 @@
 import environ
 from datetime import timedelta
+from celery.schedules import crontab
+from modules.orders.services.bank import get_dollar_course
 
 from pathlib import Path
 
@@ -132,9 +134,14 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 CELERY_BEAT_SCHEDULE = {
-    'task-first': {
+    'synchronize-file-with-database': {
         'task': 'modules.orders.tasks.synchronize_file_with_database',
         'schedule': timedelta(minutes=1)
+    },
+
+    'update-dollar-course': {
+        'task': 'modules.orders.tasks.update_dollar_course',
+        'schedule': crontab(hour=0, minute=0),
     },
 }
 
@@ -146,4 +153,7 @@ CREDENTIALS_FILE = '/home/lina/Documents/SFW/Portfolio/Test/2022.08.11 Test - Ca
 # Google Sheets Document ID
 # https://docs.google.com/spreadsheets/d/1A80yThLhpntkx7KXi1J7TROb4xlv8mmjH0puejWcIDk/edit
 SPREADSHEET_ID = '1A80yThLhpntkx7KXi1J7TROb4xlv8mmjH0puejWcIDk'
-SPREADSHEET_RANGE = 'A1:D51'
+SPREADSHEET_RANGE = 'A1:D100'
+
+# Dollar Course
+DOLLAR_COURSE = get_dollar_course()

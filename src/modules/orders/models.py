@@ -23,8 +23,10 @@ class Order(models.Model):
         editable=False,
     )
 
+    deleted_from_file = models.BooleanField(default=True)
+
     def __str__(self):
-        return self.title
+        return self.number
 
     class Meta:
-        ordering = ['-delivery_date']
+        ordering = ['number']
