@@ -31,11 +31,17 @@
    poetry install
    ```
 6. Установить Docker и docker-compose с [официального сайта](https://www.docker.com/products/docker-desktop)
-7. Запустить сервисы в Docker (PostgreSQL, Redis, adminer):
+7. Подготовить порты для Docker:
    ```
-   docker-compose -f basic-compose.yml up -d --build --remove-orphans
+   sudo service docker start
+   /etc/init.d/redis-server stop
+   sudo service postgresql stop
    ```
-8. Получить креды от внешних сервисов и прикрепить их соответсвенно:
+8. Запустить сервисы в Docker (PostgreSQL, Redis, adminer):
+   ```
+   sudo docker-compose -f basic-compose.yml up -d --build --remove-orphans
+   ```
+9. Получить креды от внешних сервисов и прикрепить их соответсвенно:
 
 - src/settings/.env
 - src/telegram/.env
