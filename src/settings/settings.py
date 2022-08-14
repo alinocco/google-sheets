@@ -78,7 +78,13 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': 'localhost',
+
+        # Host's values:
+        #   * 'localhost' for local development
+        #   * 'db' for working with container
+        
+        'HOST': 'db', # 'localhost' for local development
+
         'PORT': '5432',
     }
 }
