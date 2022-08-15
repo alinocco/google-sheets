@@ -82,8 +82,8 @@ DATABASES = {
         # Host's values:
         #   * 'localhost' for local development
         #   * 'db' for working with container
-        
-        'HOST': 'db', # 'localhost' for local development
+
+        'HOST': 'localhost', # 'localhost' for local development
 
         'PORT': '5432',
     }
