@@ -8,6 +8,17 @@
 
 - python=3.8.10
 
+## Степень выполненности
+
+- [x] 1.0 Получение данных, при помощи Google Drive API и Google Sheets API
+- [x] 2.1 Подключение PostgreSQL
+- [x] 2.2 Перевод в рубли по курсу ЦБ - "стоимость в руб."
+- [x] 3.0 Обеспечение синхронизации Google Sheets и базы данных
+- [x] 4.1 Docker-контейнер
+- [x] 4.2 Сообщение через Telegram-бота о "сроках поставки"
+- [x] 4.3 Django-приложение с фронт-ендом ReactJS
+- [x] 5.0 GitHub с документом Google Sheets
+
 ## Настройка и запуск проекта
 
 1. Склонировать репозиторий с помощью команды:
@@ -41,7 +52,7 @@
    ```
    sudo docker-compose -f basic-compose.yml up -d --build --remove-orphans
    ```
-   Для контейнеризации самого приложения:
+   Для контейнеризации самого приложения (только для проверки задания 4.1):
    ```
    sudo docker-compose -f basic-compose.prod.yml up -d --build --remove-orphans
    ```
@@ -50,6 +61,8 @@
 - src/settings/.env
 - src/telegram/.env
 - credentials.json
+
+_Для проверки оставила доступными._
 
 9. Применить миграции:
    ```
@@ -64,13 +77,16 @@
     cd src && celery -A settings worker -B -l INFO
     ```
 
-## Степень выполненности
+Дополнительно:
 
-- [x] 1.0 Получение данных, при помощи Google Drive API и Google Sheets API
-- [x] 2.1 Подключение PostgreSQL
-- [x] 2.2 Перевод в рубли по курсу ЦБ - "стоимость в руб."
-- [x] 3.0 Обеспечение синхронизации Google Sheets и базы данных
-- [x] 4.1 Docker-контейнер
-- [x] 4.2 Сообщение через Telegram-бота о "сроках поставки"
-- [ ] 4.3 Django-приложение с фронт-ендом ReactJS 
-- [ ] 5.0 GitHub с документом Google Sheets
+1. Чтобы проверить задание 4.1 - прописано выше
+2. Чтобы проверить задание 4.2 - в файле src/telegram/.env необходимо:
+
+- найдите бота @lina_google_sheets_bot
+- поменять CHAT_ID на свой ID (можно узнать через @IDBot в Телеграмме)
+- поменяйте в src/settings/settings.py CELERY_BEAT_SCHEDULE (для 'send-notification-with-expired-orders' поставьте timedelta(minutes=1) вместо crontab(hour=0, minute=0))
+
+3. Чтобы проверить задание 4.3 - веб-страница:
+
+- запустите сервер с командой runserver
+- откройте в браузере src/frontend/main.html

@@ -1,0 +1,33 @@
+body{
+    background-color: #f8fafb;
+    margin: 0;
+}
+
+img{
+    width: 100%;
+}
+
+#statistics-wrapper{
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 2em;
+    border: 1px solid #eaeaeb;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }

@@ -24,6 +24,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
+CORS_ALLOW_ALL_ORIGINS=True
+
 
 # Application definition
 
@@ -35,12 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'corsheaders',
+
     'modules.orders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -159,7 +166,7 @@ CELERY_BEAT_SCHEDULE = {
 
 # Credentials for Google Drive API 
 # (get via https://console.cloud.google.com)
-CREDENTIALS_FILE = 'credentials.json'
+CREDENTIALS_FILE = BASE_DIR / '../credentials.json'
 
 # Google Sheets Document ID
 # https://docs.google.com/spreadsheets/d/1A80yThLhpntkx7KXi1J7TROb4xlv8mmjH0puejWcIDk/edit

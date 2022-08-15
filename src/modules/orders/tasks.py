@@ -4,6 +4,7 @@ from datetime import date
 from settings.settings import CREDENTIALS_FILE, SPREADSHEET_ID, SPREADSHEET_RANGE, DOLLAR_COURSE
 from .services.google import authorize, read_spreadsheet
 from .services.bank import get_dollar_course
+from .services.statistics import visualize_graph_of_orders
 from .models import Order
 
 from telegram.bot import notify
@@ -45,6 +46,7 @@ def synchronize_file_with_database():
     service = authorize(CREDENTIALS_FILE)
     document = read_spreadsheet(service, SPREADSHEET_ID, SPREADSHEET_RANGE)
     orders = document['values'][1:]
+    is_updated = False
 
     for order in orders:
         # If data is not valid, we go to next item without adding to DB.
@@ -60,18 +62,23 @@ def synchronize_file_with_database():
             print('Exception:', e)
             continue
 
-        Order.objects.update_or_create(
+        _, created = Order.objects.update_or_create(
             number = order_data.number,
             order = order_data.order,
             price_in_dollars = order_data.price_in_dollars,
             price_in_rubles = order_data.price_in_rubles,
             delivery_date = order_data.delivery_date,
-            deleted_from_file = False
+            defaults = {
+                'deleted_from_file': False,
+            }
         )
+
+        if created and not is_updated:
+            is_updated = True
 
     orders_in_db = Order.objects.all()
 
-    # Delete all the instances of DB with untouched deleted_from_file.
+    # Delete all the instances of DB with untouched deleted_from_file:
     if len(orders) != orders_in_db.count():
         orders_in_db.filter(deleted_from_file=True).delete()
 
@@ -79,6 +86,14 @@ def synchronize_file_with_database():
         for order in orders_in_db:
             order.deleted_from_file = True
             order.save()
+
+        is_updated = True
+
+    # Update statistics items (counter, table, graph) if the data in table was changed.
+    if is_updated:
+        visualize_graph_of_orders()
+
+    print(is_updated)
 
 
 @shared_task
@@ -109,3 +124,5 @@ def update_dollar_course():
     In order, to optimize the system and reduce not-needed requests.
     """
     DOLLAR_COURSE = get_dollar_course()
+
+
