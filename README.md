@@ -72,4 +72,5 @@
 - [x] 3.0 Обеспечение синхронизации Google Sheets и базы данных
 - [x] 4.1 Docker-контейнер
 - [x] 4.2 Сообщение через Telegram-бота о "сроках поставки"
-- [ ] 4.3 Django-приложение с фронт-ендом ReactJS 5. GitHub с документом Google Sheets
+- [ ] 4.3 Django-приложение с фронт-ендом ReactJS 
+- [ ] 5.0 GitHub с документом Google Sheets
